@@ -1,0 +1,59 @@
+# 编译输出目录（Maven）
+target/
+
+# 编译输出目录（Gradle）
+build/
+
+# VS Code 目录和设置
+.vscode/
+
+# Java 编译生成的 class 文件
+*.class
+
+# 日志文件
+*.log
+
+# IntelliJ IDEA 目录（如果偶尔用 IntelliJ）
+.idea/
+*.iml
+out/
+
+# Eclipse 目录（如果偶尔用 Eclipse）
+.project
+.classpath
+.settings/
+
+# MacOS 系统文件
+.DS_Store
+
+# Windows 系统文件
+Thumbs.db
+ehthumbs.db
+
+# Java 打包的 jar 文件（如果你不想提交）
+*.jar
+
+# JavaFX 相关可能生成的文件
+*.jfx*
+
+# 测试报告（Maven Surefire、Failsafe）
+surefire-reports/
+failsafe-reports/
+
+# Maven Wrapper 文件（如果用）
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle Wrapper 文件（如果用）
+gradle/wrapper/gradle-wrapper.jar
+
+# 临时文件
+*.tmp
+*.temp
+
+# 配置文件备份
+*~
+*.bak
+
+# 其他临时文件
+*.swp
+*.swo
