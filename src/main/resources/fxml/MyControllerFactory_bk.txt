@@ -1,0 +1,200 @@
+package com.phoenixhell.app.config;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import org.reflections.Reflections;
+
+import com.phoenixhell.app.annotation.Inject;
+import com.phoenixhell.app.annotation.MyView;
+
+import javafx.scene.Parent;
+
+/**
+ * MyControllerFactory 是一个简易 IoC 容器。
+ * 负责扫描带有 @MyView 注解的控制器类，自动创建 controller 实例、
+ * 对其依赖字段注入（@Inject），并自动调用 setView 注入 View 实例。
+ * 
+ * controller 只做协调，不做业务处理，所有业务逻辑都放在 service。
+ * view 只做展示，不直接操作 service，所有数据流转都通过 controller。
+ * controller 可以根据需要更新 view，比如调用 view 的刷新方法。
+ */
+public class MyControllerFactory {
+
+  // 控制器缓存：每个 controller 类 -> 实例（单例）
+  private static final Map<Class<?>, Object> controllerCache = new HashMap<>();
+
+  // View 缓存：每个 view 类 -> 实例（单例）
+  private static final Map<Class<?>, Object> viewCache = new HashMap<>();
+
+  /**
+   * 扫描指定包路径下，所有带 @MyView 注解的 controller 类，并完成初始化绑定
+   *
+   * @param basePackage 扫描的包名，例如 "com.phoenixhell.app.controller"
+   */
+  public static void scan(String basePackage) {
+    // 使用 Reflections 扫描指定包下的类（需要添加 org.reflections 依赖）
+    Reflections reflections = new Reflections(basePackage);
+
+    // 获取所有带有 @MyView 注解的 controller 类
+    Set<Class<?>> controllerClasses = reflections.getTypesAnnotatedWith(MyView.class);
+
+    for (Class<?> controllerClass : controllerClasses) {
+      try {
+        // 创建 controller 实例并缓存
+        Object controller = controllerClass.getDeclaredConstructor().newInstance();
+        controllerCache.put(controllerClass, controller);
+
+        // 对 @Inject 字段进行依赖注入（如 Service 类）
+        injectFields(controller);
+
+        // 获取 @MyView 注解中指定的 View 类（必须继承 javafx.scene.Parent）
+        MyView annotation = controllerClass.getAnnotation(MyView.class);
+        Class<? extends Parent> viewClass = annotation.value();
+
+        // 创建 View 实例并缓存
+        Parent view = viewClass.getDeclaredConstructor().newInstance();
+        viewCache.put(viewClass, view);
+
+        // 自动调用 controller.setView(view) 方法，完成 View 注入
+        injectView(controller, viewClass, view);
+
+      } catch (Exception e) {
+        throw new RuntimeException("初始化 Controller 失败：" + controllerClass, e);
+      }
+    }
+  }
+
+  /**
+   * 注入 Controller 中标注了 @Inject 的字段（依赖注入）
+   * 目前只支持类型注入，不支持 Qualifier、Scope 等复杂特性
+   *
+   * 自动注入 View 子组件到 Controller 字段：
+   * 按字段类型（如 TextArea）查找。
+   * 若类型唯一，则注入。
+   * 若多个，必须指定 @Inject("componentId")，否则报错。
+   * 若 @Inject("componentId") 指定了组件 ID，但找不到对应组件，也报错。
+   * 支持 @Inject 注解传入 componentId 参数。
+   * 类似 @Inject("myTextArea") 来定位具体组件。
+   * 
+   * @param controller 控制器对象
+   */
+  private static void injectFields(Object controller) throws Exception {
+    for (Field field : controller.getClass().getDeclaredFields()) {
+      Inject inject = field.getAnnotation(Inject.class);
+      if (inject == null)
+        continue;
+
+      Class<?> fieldType = field.getType();
+      field.setAccessible(true);
+
+      Object value = controllerCache.get(fieldType);
+
+      if (value == null) {
+        // 如果字段类型是 Service（或非 JavaFX 控件）
+        if (!Parent.class.isAssignableFrom(fieldType) &&
+            !javafx.scene.Node.class.isAssignableFrom(fieldType)) {
+          value = fieldType.getDeclaredConstructor().newInstance();
+          controllerCache.put(fieldType, value);
+          field.set(controller, value);
+          continue;
+        }
+
+        // 字段是 JavaFX 控件，尝试从 View 中查找组件
+        // 获取 controller 对应的 view
+        MyView viewAnno = controller.getClass().getAnnotation(MyView.class);
+        Parent view = (Parent) viewCache.get(viewAnno.value());
+
+        if (view == null) {
+          throw new RuntimeException("未找到对应 View 实例: " + viewAnno.value().getName());
+        }
+
+        // 组件 ID，如果 @Inject("id") 指定了则使用
+        String componentId = inject.value();
+
+        // 从 View 查找组件
+        Object component = null;
+        if (!componentId.isEmpty()) {
+          component = view.lookup("#" + componentId);
+          if (component == null) {
+            throw new RuntimeException("View 中未找到 id 为 \"" + componentId + "\" 的组件");
+          }
+          if (!fieldType.isAssignableFrom(component.getClass())) {
+            throw new RuntimeException("字段类型不兼容: " + fieldType + " <- " + component.getClass());
+          }
+        } else {
+          // 未指定 ID，根据类型查找唯一匹配组件
+          Set<javafx.scene.Node> nodes = view.lookupAll("*").stream()
+              .filter(fieldType::isInstance)
+              .map(fieldType::cast)
+              .collect(java.util.stream.Collectors.toSet());
+
+          if (nodes.size() == 1) {
+            component = nodes.iterator().next();
+          } else if (nodes.isEmpty()) {
+            throw new RuntimeException("View 中未找到类型为 " + fieldType.getSimpleName() + " 的组件");
+          } else {
+            throw new RuntimeException("View 中存在多个类型为 " + fieldType.getSimpleName() + " 的组件，请使用 @Inject(\"id\") 明确指定");
+          }
+        }
+
+        field.set(controller, component);
+      } else {
+        field.set(controller, value);
+      }
+    }
+  }
+
+  /**
+   * 自动调用 controller 的 setView(...) 方法，注入 View
+   * 支持的方法签名包括：
+   * - setView(具体 View 类型)
+   * - setView(Parent)
+   *
+   * @param controller 控制器对象
+   * @param viewType   View 的类类型
+   * @param view       View 实例对象
+   */
+  private static void injectView(Object controller, Class<?> viewType, Parent view) {
+    try {
+      // 遍历 controller 的方法，寻找名称为 setView，且参数类型可接受当前 View 的方法
+      Method method = Arrays.stream(controller.getClass().getMethods())
+          .filter(m -> m.getName().equals("setView"))
+          .filter(m -> m.getParameterCount() == 1)
+          .filter(m -> m.getParameterTypes()[0].isAssignableFrom(viewType))
+          .findFirst()
+          .orElseThrow(() -> new RuntimeException("找不到 setView 方法"));
+
+      // 调用 setView(view)
+      method.invoke(controller, view);
+    } catch (Exception e) {
+      throw new RuntimeException("调用 setView 失败：" + controller.getClass(), e);
+    }
+  }
+
+  /**
+   * 获取已经构建好的 Controller 实例
+   *
+   * @param clazz Controller 类型
+   * @return Controller 实例
+   */
+  @SuppressWarnings("unchecked")
+  public static <T> T getController(Class<T> clazz) {
+    return (T) controllerCache.get(clazz);
+  }
+
+  /**
+   * 获取已经构建好的 View 实例
+   *
+   * @param clazz View 类型
+   * @return View 实例
+   */
+  @SuppressWarnings("unchecked")
+  public static <T> T getView(Class<T> clazz) {
+    return (T) viewCache.get(clazz);
+  }
+}
