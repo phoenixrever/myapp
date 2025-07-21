@@ -46,7 +46,7 @@ public class Launcher extends Application {
     Scene scene = new Scene(controller.getView(), 400, 300);
 
     primaryStage.getIcons()
-        .add(new Image(Objects.requireNonNull(App.class.getResourceAsStream("/myapp/icon-64.png"))));
+        .add(new Image(Objects.requireNonNull(Launcher.class.getResourceAsStream("/myapp/icon-64.png"))));
     primaryStage.setMinHeight(300);
     primaryStage.setMinWidth(400);
     primaryStage.initStyle(StageStyle.DECORATED);

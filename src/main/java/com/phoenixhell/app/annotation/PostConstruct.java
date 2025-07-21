@@ -1,7 +1,5 @@
 package com.phoenixhell.app.annotation;
 
-package com.phoenixhell.app.annotation;
-
 import java.lang.annotation.*;
 
 /**

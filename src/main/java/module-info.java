@@ -20,10 +20,16 @@
  * 这个错误 java.lang.module.FindException: Module myapp not found
  * 确认下target/classes/module-info.class 存在。
  * mvn clean package
+ * 
+ * vscode 不加 transitive 会编译警告 重点解释：
+ * 
+ * 这个警告其实是 IDE（Java 编译器）提示你，如果将来别人依赖你的模块，可能会访问不到 Button 类。
+ * 但 如果你当前的项目里没有其他模块依赖你，你不用管这个警告，程序照样能跑。
+ * 只有当你做库或者模块被别人用时，才严格处理 requires transitive。
  */
 module myapp {
   // JavaFX 控件模块，包含 UI 控件（如 Button、Label、Stage 等）
-  requires javafx.controls;
+  requires transitive javafx.controls;
   // JavaFX 图形模块，包含图形渲染相关的类（如 Scene、Canvas 等）
   // 你模块直接访问 javafx.graphics，没问题。使用你模块的模块也能访问到 javafx.graphics 里的类。
   requires transitive javafx.graphics;
@@ -40,7 +46,7 @@ module myapp {
   requires org.reflections; // Reflections 反射扫描库
 
   // JSON 相关
-  requires com.fasterxml.jackson.databind; // Jackson Databind
+  requires transitive com.fasterxml.jackson.databind; // Jackson Databind
   requires com.google.gson; // Gson JSON 解析库
 
   // 其他依赖
@@ -69,4 +75,5 @@ module myapp {
   exports com.phoenixhell.app.config;
   exports com.phoenixhell.app.model;
   // exports com.phoenixhell.app.i18n;
+
 }

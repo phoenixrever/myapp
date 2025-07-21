@@ -1,8 +1,8 @@
 d:\code\myapp\src\main\java\com\phoenixhell\app\annotation\Control.java
+d:\code\myapp\src\main\java\com\phoenixhell\app\annotation\PostConstruct.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\annotation\Service.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\annotation\View.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\api\ViewAware.java
-d:\code\myapp\src\main\java\com\phoenixhell\app\App.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\config\MyControllerFactory.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\controller\MainViewController.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\controller\UserViewController.java
@@ -16,6 +16,7 @@ d:\code\myapp\src\main\java\com\phoenixhell\app\service\UserService.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\service\UserSettingsService.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\service\WindowService.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\Start.java
+d:\code\myapp\src\main\java\com\phoenixhell\app\Test.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\util\DateUtilsPlus.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\util\FileUtil.java
 d:\code\myapp\src\main\java\com\phoenixhell\app\util\javafx\NodeUtils.java
