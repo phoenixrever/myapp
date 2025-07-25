@@ -47,7 +47,7 @@ module myapp {
 
   // JSON 相关
   requires transitive com.fasterxml.jackson.databind; // Jackson Databind
-  requires com.google.gson; // Gson JSON 解析库
+  // requires com.fasterxml.jackson.core; // jackson JSON 解析库
 
   // 其他依赖
   requires atlantafx.base; // AtlantisFX 主题库
@@ -57,7 +57,8 @@ module myapp {
   requires org.kordamp.ikonli.materialdesign2; // Ikonli MaterialDesign2 图标支持
   requires net.harawata.appdirs; // AppDirs 跨平台应用目录库
   requires org.tinylog.api; // Tinylog 日志库
-  requires org.tinylog.impl; // Tinylog 实现
+  requires org.tinylog.impl;
+  requires javafx.base; // Tinylog 实现
 
   // 对外暴露的包，允许其他模块访问这些包中的 public 类
 
@@ -74,6 +75,7 @@ module myapp {
   exports com.phoenixhell.app.exception;
   exports com.phoenixhell.app.config;
   exports com.phoenixhell.app.model;
+  exports com.phoenixhell.app.api;
   // exports com.phoenixhell.app.i18n;
 
 }

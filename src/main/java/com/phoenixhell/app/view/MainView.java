@@ -2,6 +2,8 @@ package com.phoenixhell.app.view;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import com.phoenixhell.app.util.I18n;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -36,14 +38,14 @@ public class MainView extends BorderPane {
     Pane spacer1 = new Pane();
     HBox.setHgrow(spacer1, Priority.ALWAYS);
 
-    Button darkButton = new Button("Dark");
+    Button darkButton = new Button(I18n.get("ui_dark"));
     darkButton.setId("darkButton");
     darkButton.setGraphic(new FontIcon("mdi2m-moon-waxing-crescent"));
 
     Pane spacer2 = new Pane();
     HBox.setHgrow(spacer2, Priority.ALWAYS);
 
-    Button lightButton = new Button("Light");
+    Button lightButton = new Button(I18n.get("ui_light"));
     lightButton.setId("lightButton");
 
     lightButton.setGraphic(new FontIcon("mdi2w-weather-sunny"));

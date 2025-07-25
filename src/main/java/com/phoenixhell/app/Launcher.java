@@ -5,14 +5,13 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 import com.phoenixhell.app.config.MyControllerFactory;
 import com.phoenixhell.app.controller.MainViewController;
 import com.phoenixhell.app.handler.DefaultExceptionHandler;
-import com.phoenixhell.app.service.LocaleService;
 import com.phoenixhell.app.service.UserSettingsService;
 import com.phoenixhell.app.service.WindowService;
+import com.phoenixhell.app.util.I18n;
 import com.phoenixhell.app.util.Resources;
 
 import javafx.application.Application;
@@ -25,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class Launcher extends Application {
+  private static Stage stage;
   // requires transitive javafx.graphics; // UI、组件使用的?
   public static final List<KeyCodeCombination> SUPPORTED_HOTKEYS = List.of(
       new KeyCodeCombination(KeyCode.SLASH),
@@ -33,11 +33,12 @@ public class Launcher extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    Launcher.stage = primaryStage;
     Thread.currentThread().setUncaughtExceptionHandler(new DefaultExceptionHandler(primaryStage));
     loadApplicationProperties();
 
     UserSettingsService.initTheme();
-    updateAppWindowTitle(primaryStage);
+    updateAppWindowTitle();
 
     // 扫描并注入Controller中的Service、View、Control
     MyControllerFactory.scan("com.phoenixhell.app.controller");
@@ -51,7 +52,6 @@ public class Launcher extends Application {
     primaryStage.setMinWidth(400);
     primaryStage.initStyle(StageStyle.DECORATED);
     primaryStage.setScene(scene);
-    primaryStage.setTitle("智能 IoC 工厂 示例");
     WindowService.setup(primaryStage);
     primaryStage.show();
   }
@@ -73,10 +73,10 @@ public class Launcher extends Application {
     }
   }
 
-  public static void updateAppWindowTitle(Stage primaryStage) {
-    ResourceBundle resourceBundle = ResourceBundle.getBundle("App", LocaleService.getLocale());
-    primaryStage.setTitle(resourceBundle.getString("name"));
+  public static void updateAppWindowTitle() {
+    stage.setTitle(I18n.get("name"));
   }
+
   // private void dispatchHotkeys(KeyEvent event) {
   // for (KeyCodeCombination k : SUPPORTED_HOTKEYS) {
   // if (k.match(event)) {
