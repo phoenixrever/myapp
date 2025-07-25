@@ -1,17 +1,27 @@
 package com.phoenixhell.app.config;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Queue;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.reflections.Reflections;
+
 import com.phoenixhell.app.annotation.Control;
-import com.phoenixhell.app.annotation.View;
-import com.phoenixhell.app.api.ViewAware;
 import com.phoenixhell.app.annotation.Service;
+import com.phoenixhell.app.annotation.View;
+import com.phoenixhell.app.api.Translatable;
+import com.phoenixhell.app.api.ViewAware;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import org.reflections.Reflections;
 
 /**
  * MyControllerFactory 是一个简易的 IoC 容器实现。
@@ -47,6 +57,14 @@ public class MyControllerFactory {
    * key: View 类对象，value: View 根节点实例
    */
   private static final Map<Class<? extends Parent>, Parent> viewCache = new HashMap<>();
+
+  public static List<Translatable> getControllers() {
+    return beanCache.values().stream()
+        .filter(Objects::nonNull)
+        .filter(c -> c instanceof Translatable)
+        .map(c -> (Translatable) c)
+        .collect(Collectors.toList());
+  }
 
   /**
    * 扫描指定包路径，自动发现并实例化所有 Controller 类
@@ -464,5 +482,4 @@ public class MyControllerFactory {
       }
     }
   }
-
 }

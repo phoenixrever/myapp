@@ -1,7 +1,6 @@
 package com.phoenixhell.app.controller;
 
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 import com.phoenixhell.app.annotation.Control;
 import com.phoenixhell.app.annotation.PostConstruct;
@@ -48,10 +47,8 @@ public class MainViewController implements ViewAware<MainView>, Translatable {
     @PostConstruct
     public void init() {
         // 注册当前控制器为 Translatable 接口的实现 这样可以在语言切换时更新文本
-        LocaleService.register(this);
         initView();
         initEvent();
-        updateTexts();
     }
 
     // 方法 2：不使用注解，直接命名为 initialize()

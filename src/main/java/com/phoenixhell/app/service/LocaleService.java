@@ -1,19 +1,17 @@
 package com.phoenixhell.app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
 import com.phoenixhell.app.Launcher;
 import com.phoenixhell.app.api.Translatable;
+import com.phoenixhell.app.config.MyControllerFactory;
 import com.phoenixhell.app.util.I18n;
 
 public class LocaleService {
 
     public final static List<Locale> locales = List.of(Locale.ENGLISH, Locale.JAPANESE);
-    private static final List<Translatable> listeners = new ArrayList<>();
-
     private static Locale currentLocale;
 
     public static Locale getLocale() {
@@ -38,16 +36,11 @@ public class LocaleService {
         return currentLocale;
     }
 
-    public static void register(Translatable t) {
-        listeners.add(t);
-    }
-
     public static void setLocale(Locale locale) {
         currentLocale = locale;
         UserSettingsService.setLocale(currentLocale.getISO3Language());
         I18n.reloadBundle();
         Launcher.updateAppWindowTitle();
-        for (Translatable t : listeners)
-            t.updateTexts();
+        MyControllerFactory.getControllers().forEach(Translatable::updateTexts);
     }
 }
