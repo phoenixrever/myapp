@@ -6,31 +6,25 @@ import com.phoenixhell.app.annotation.Control;
 import com.phoenixhell.app.annotation.PostConstruct;
 import com.phoenixhell.app.annotation.Service;
 import com.phoenixhell.app.annotation.View;
-import com.phoenixhell.app.contract.Translatable;
-import com.phoenixhell.app.contract.ViewAware;
 import com.phoenixhell.app.service.system.LocaleService;
 import com.phoenixhell.app.service.system.UserSettingsService;
+import com.phoenixhell.app.ui.MainView;
 import com.phoenixhell.app.util.I18n;
-import com.phoenixhell.app.view.MainView;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
 
 /**
  * 继承ViewAware接口的controller才会被factory创建
  */
-public class MainViewController implements ViewAware<MainView>, Translatable {
+public class MainViewController extends BaseController {
     @View
     private MainView view;
 
     @Service
     private UserSettingsService userSettingsService;
-
-    @Control
-    public BorderPane mainPane;
 
     @Control("darkButton")
     public Button darkButton;
@@ -67,7 +61,7 @@ public class MainViewController implements ViewAware<MainView>, Translatable {
 
         /**
          * localChoiceBox.setConverter(new StringConverter<>() {
-         * 
+         *
          * @Override
          *           public String toString(Locale locale) {
          *           // 显示语言名
@@ -77,7 +71,7 @@ public class MainViewController implements ViewAware<MainView>, Translatable {
          *           default -> locale.getDisplayLanguage();
          *           };
          *           }
-         * 
+         *
          * @Override
          *           public Locale fromString(String s) {
          *           return switch (s) {

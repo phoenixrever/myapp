@@ -3,7 +3,7 @@ package com.phoenixhell.app.controller;
 import com.phoenixhell.app.annotation.Control;
 import com.phoenixhell.app.annotation.View;
 import com.phoenixhell.app.service.UserService;
-import com.phoenixhell.app.view.MainView;
+import com.phoenixhell.app.ui.MainView;
 
 public class UserViewController {
 

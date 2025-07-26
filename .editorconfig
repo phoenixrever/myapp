@@ -1,0 +1,40 @@
+# EditorConfig 是一个跨编辑器、跨IDE的配置文件格式，
+# 用来统一代码风格，避免大家因编辑器设置不同而格式不统一。
+# https://editorconfig.org/
+
+# 标记这是根配置文件，编辑器遇到 root=true 会停止往父目录查找
+root = true
+
+# 下面的配置适用于所有文件 (* 表示所有文件)
+[*]
+# 缩进风格：使用空格
+indent_style = space
+# 缩进大小：4个空格
+indent_size = 4
+# 换行符统一使用 LF (Linux/Unix/Mac 风格)
+end_of_line = lf
+# 文件编码统一为 UTF-8
+charset = utf-8
+# 去除行尾多余空白
+trim_trailing_whitespace = true
+# 文件末尾自动添加换行符
+insert_final_newline = true
+
+# 针对 Java 文件的单独配置
+[*.java]
+# Java 文件缩进仍为4个空格（这里重复声明可加显式）
+indent_size = 4
+
+# 针对 XML 文件的配置，通常Java项目中也有XML配置文件
+[*.xml]
+indent_size = 4
+indent_style = space
+
+# 针对 Markdown 文件的配置
+[*.md]
+trim_trailing_whitespace = false  # Markdown 中末尾空格通常用于换行，不能去掉
+
+# 针对 JSON 文件配置
+[*.json]
+indent_size = 4
+indent_style = space

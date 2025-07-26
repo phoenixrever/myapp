@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
+import java.util.prefs.Preferences;
 
 import com.phoenixhell.app.Launcher;
 
@@ -33,7 +34,7 @@ public final class Resources {
         return System.getProperty(propertyKey, System.getenv(envKey));
     }
 
-    // public static Preferences getPreferences() {
-    // return Preferences.userRoot().node("atlantafx");
-    // }
+    public static Preferences getPreferences() {
+        return Preferences.userRoot().node("atlantafx");
+    }
 }
