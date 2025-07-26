@@ -1,4 +1,4 @@
-package com.phoenixhell.app.service;
+package com.phoenixhell.app.service.system;
 
 import javafx.stage.Screen;
 import javafx.stage.Stage;

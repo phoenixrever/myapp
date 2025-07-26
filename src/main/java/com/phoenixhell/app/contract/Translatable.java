@@ -1,4 +1,4 @@
-package com.phoenixhell.app.api;
+package com.phoenixhell.app.contract;
 
 /**
  * 根据语言切换更新文本

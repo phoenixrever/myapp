@@ -1,4 +1,4 @@
-package com.phoenixhell.app.service;
+package com.phoenixhell.app.service.system;
 
 import net.harawata.appdirs.AppDirs;
 import net.harawata.appdirs.AppDirsFactory;

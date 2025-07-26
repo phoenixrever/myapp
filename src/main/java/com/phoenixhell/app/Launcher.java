@@ -9,8 +9,8 @@ import java.util.Properties;
 import com.phoenixhell.app.config.MyControllerFactory;
 import com.phoenixhell.app.controller.MainViewController;
 import com.phoenixhell.app.handler.DefaultExceptionHandler;
-import com.phoenixhell.app.service.UserSettingsService;
-import com.phoenixhell.app.service.WindowService;
+import com.phoenixhell.app.service.system.UserSettingsService;
+import com.phoenixhell.app.service.system.WindowService;
 import com.phoenixhell.app.util.I18n;
 import com.phoenixhell.app.util.Resources;
 

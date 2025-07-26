@@ -6,10 +6,10 @@ import com.phoenixhell.app.annotation.Control;
 import com.phoenixhell.app.annotation.PostConstruct;
 import com.phoenixhell.app.annotation.Service;
 import com.phoenixhell.app.annotation.View;
-import com.phoenixhell.app.api.Translatable;
-import com.phoenixhell.app.api.ViewAware;
-import com.phoenixhell.app.service.LocaleService;
-import com.phoenixhell.app.service.UserSettingsService;
+import com.phoenixhell.app.contract.Translatable;
+import com.phoenixhell.app.contract.ViewAware;
+import com.phoenixhell.app.service.system.LocaleService;
+import com.phoenixhell.app.service.system.UserSettingsService;
 import com.phoenixhell.app.util.I18n;
 import com.phoenixhell.app.view.MainView;
 
@@ -19,6 +19,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.util.StringConverter;
 
+/**
+ * 继承ViewAware接口的controller才会被factory创建
+ */
 public class MainViewController implements ViewAware<MainView>, Translatable {
     @View
     private MainView view;

@@ -75,7 +75,7 @@ module myapp {
   exports com.phoenixhell.app.exception;
   exports com.phoenixhell.app.config;
   exports com.phoenixhell.app.model;
-  exports com.phoenixhell.app.api;
+  exports com.phoenixhell.app.contract;
   // exports com.phoenixhell.app.i18n;
 
 }

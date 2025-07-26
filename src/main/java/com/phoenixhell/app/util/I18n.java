@@ -1,7 +1,8 @@
 package com.phoenixhell.app.util;
 
 import java.util.ResourceBundle;
-import com.phoenixhell.app.service.LocaleService;
+
+import com.phoenixhell.app.service.system.LocaleService;
 
 public class I18n {
   private static ResourceBundle bundle = ResourceBundle.getBundle("App", LocaleService.getLocale());

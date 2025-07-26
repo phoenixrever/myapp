@@ -17,8 +17,8 @@ import org.reflections.Reflections;
 import com.phoenixhell.app.annotation.Control;
 import com.phoenixhell.app.annotation.Service;
 import com.phoenixhell.app.annotation.View;
-import com.phoenixhell.app.api.Translatable;
-import com.phoenixhell.app.api.ViewAware;
+import com.phoenixhell.app.contract.Translatable;
+import com.phoenixhell.app.contract.ViewAware;
 
 import javafx.scene.Node;
 import javafx.scene.Parent;
