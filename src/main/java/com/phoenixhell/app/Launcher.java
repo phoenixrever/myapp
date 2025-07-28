@@ -71,7 +71,11 @@ public class Launcher extends Application {
         var tm = ThemeManager.getInstance();
         tm.setScene(scene);
         tm.setTheme(tm.getDefaultTheme());
-        scene.getStylesheets().addAll(Resources.resolve("assets/styles/index.css"));
+        scene.getStylesheets().forEach(s -> System.out.println("✅ 成功加载样式: " + s));
+
+        // tm.setTheme 已经加载过css了 所以这里不用再加载了
+        // scene.getStylesheets().addAll(Resources.resolve("assets/styles/index.css"));
+        // scene.getStylesheets().forEach(System.out::println);
 
         // primaryStage.getIcons()
         // .add(new

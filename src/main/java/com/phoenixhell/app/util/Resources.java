@@ -25,6 +25,7 @@ public final class Resources {
         return URI.create(url.toExternalForm());
     }
 
+    // 自动加 上"/"前缀
     public static String resolve(String resource) {
         Objects.requireNonNull(resource);
         return resource.startsWith("/") ? resource : MODULE_DIR + resource;

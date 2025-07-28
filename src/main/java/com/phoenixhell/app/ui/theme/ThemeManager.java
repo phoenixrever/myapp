@@ -111,7 +111,22 @@ public final class ThemeManager {
         }
 
         Application.setUserAgentStylesheet(Objects.requireNonNull(theme.getUserAgentStylesheet()));
-        getScene().getStylesheets().setAll(theme.getAllStylesheets());
+
+        // FIXME Resouce 都加上 toExternalForm()
+        theme.getAllStylesheets().stream().map(path -> {
+            try {
+                return getClass().getResource(path).toExternalForm();
+            } catch (Exception e) {
+                System.err.println("Failed to load stylesheet: " + path);
+                e.printStackTrace();
+                return null;
+            }
+        }).distinct()
+                .filter(Objects::nonNull)
+                .forEach(s -> getScene().getStylesheets().add(s));
+
+        // 这个老是由警告
+        // getScene().getStylesheets().setAll(theme.getAllStylesheets());
         getScene().getRoot().pseudoClassStateChanged(DARK, theme.isDarkMode());
 
         // remove user CSS customizations and reset accent on theme change

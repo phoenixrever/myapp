@@ -233,14 +233,20 @@
     </dependencies>
     <build>
         <plugins>
-            <!-- compile SCSS -->
+            <!-- compile SCSS  我就想编译器运行 目前没有好的方法 手动运行复制css吧-->
+            <!-- mvn us.hebi.sass:sass-cli-maven-plugin:run -->
             <plugin>
                 <groupId>us.hebi.sass</groupId>
                 <artifactId>sass-cli-maven-plugin</artifactId>
                 <configuration>
                     <args>
                         <arg>
-                            ${project.basedir}/src/main/resources/assets/styles/scss/index.scss:${project.build.directory}/classes/assets/styles/index.css
+                            <!-- Maven 编译时，src/main/resources 下的文件默认会被复制到 target/classes 下 -->
+                            ${project.basedir}/src/main/resources/assets/styles/scss/index.scss:${project.basedir}/src/main/resources/assets/styles/index.css
+
+                            <!--
+                            ${project.basedir}/src/main/resources/assets/styles/scss/index.scss:${project.build.directory}/classes/assets/styles/index.css -->
+
                         </arg>
                         <arg>--no-source-map</arg>
                     </args>

@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 import org.kordamp.ikonli.feather.Feather;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import com.phoenixhell.app.fake.domain.Book;
 import com.phoenixhell.app.ui.page.ExampleBox;
 import com.phoenixhell.app.ui.page.OutlinePage;
 import com.phoenixhell.app.ui.page.Snippet;
-import com.phoenixhell.app.ui.page.components.TableViewPage.Book;
 
 import atlantafx.base.controls.Spacer;
 import atlantafx.base.controls.ToggleSwitch;

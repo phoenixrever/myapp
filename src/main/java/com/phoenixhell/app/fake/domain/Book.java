@@ -1,6 +1,6 @@
-/* SPDX-License-Identifier: MIT */
+package com.phoenixhell.app.fake.domain;
 
-package atlantafx.sampler.fake.domain;
+/* SPDX-License-Identifier: MIT */
 
 import java.util.Objects;
 import java.util.UUID;
@@ -18,10 +18,10 @@ public final class Book {
     private String isbn;
 
     public Book(UUID id,
-                BooleanProperty state,
-                String author,
-                String title,
-                String isbn) {
+            BooleanProperty state,
+            String author,
+            String title,
+            String isbn) {
         this.id = id;
         this.state = state;
         this.author = author;
@@ -75,12 +75,11 @@ public final class Book {
 
     public static Book random(Faker faker) {
         return new Book(
-            UUID.randomUUID(),
-            new SimpleBooleanProperty(),
-            faker.book().author(),
-            faker.book().title(),
-            faker.code().isbn10()
-        );
+                UUID.randomUUID(),
+                new SimpleBooleanProperty(),
+                faker.book().author(),
+                faker.book().title(),
+                faker.code().isbn10());
     }
 
     public String toString(Function<Book, String> f) {
