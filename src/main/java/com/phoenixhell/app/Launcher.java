@@ -71,11 +71,13 @@ public class Launcher extends Application {
         var tm = ThemeManager.getInstance();
         tm.setScene(scene);
         tm.setTheme(tm.getDefaultTheme());
-        scene.getStylesheets().forEach(s -> System.out.println("✅ 成功加载样式: " + s));
 
-        // tm.setTheme 已经加载过css了 所以这里不用再加载了
-        // scene.getStylesheets().addAll(Resources.resolve("assets/styles/index.css"));
-        // scene.getStylesheets().forEach(System.out::println);
+        // tm.setTheme scene.getStylesheets().setAll(theme.getAllStylesheets()); 先清空
+        // scene 原有的所有样式表 然后再添加 theme.getAllStylesheets() 中的那些路径
+        // addAll(...) 是在原有基础上追加
+        // TODO 具体细节以后分析 总之这个不能少
+        scene.getStylesheets().add(getClass().getResource("/assets/styles/index.css").toExternalForm());
+        scene.getStylesheets().forEach(s -> System.out.println("✅ 成功加载样式: " + s));
 
         // primaryStage.getIcons()
         // .add(new
