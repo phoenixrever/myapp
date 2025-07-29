@@ -25,6 +25,12 @@ public final class Resources {
         return URI.create(url.toExternalForm());
     }
 
+    public static String getResourceStr(String resource) {
+        String path = resolve(resource);
+        URL url = Objects.requireNonNull(Launcher.class.getResource(resolve(path)), "Resource not found: " + path);
+        return url.toExternalForm();
+    }
+
     // 自动加 上"/"前缀
     public static String resolve(String resource) {
         Objects.requireNonNull(resource);

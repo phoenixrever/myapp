@@ -76,7 +76,7 @@ public class Launcher extends Application {
         // scene 原有的所有样式表 然后再添加 theme.getAllStylesheets() 中的那些路径
         // addAll(...) 是在原有基础上追加
         // TODO 具体细节以后分析 总之这个不能少
-        scene.getStylesheets().add(getClass().getResource("/assets/styles/index.css").toExternalForm());
+        scene.getStylesheets().add(Resources.getResourceStr("/assets/styles/index.css"));
         scene.getStylesheets().forEach(s -> System.out.println("✅ 成功加载样式: " + s));
 
         // primaryStage.getIcons()
